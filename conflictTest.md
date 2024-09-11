@@ -1,1 +1,1 @@
-Some text to the file
+Some text (different modifications) to the file
