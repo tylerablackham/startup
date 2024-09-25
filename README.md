@@ -41,3 +41,16 @@ and backend endpoint calls.
 <img src="StartupSpecificationSketches/TuneTransferAccountCreationSketch.png" alt="isolated" width="500">
 <img src="StartupSpecificationSketches/TuneTransferPlaylistTransfersSketch.png" alt="isolated" width="500">
 <img src="StartupSpecificationSketches/TuneTransferAccountConnectionSketch.png" alt="isolated" width="500">
+
+## Deliverables
+
+### HTML deliverable
+For this deliverable I built out the structure of my application using HTML.
+
+- [x] **HTML pages** - 4 HTML pages that represent the ability to log in, register, view and make transfers, and connect music accounts.
+- [x] **Links** - The login page links to the register and transfers page. The register page links to the login and transfers page.
+The transfers page links to the accounts page. The accounts page links to the transfers page.
+- [x] **Text** - All the transferred playlists and songs will be represented in text. Text describes the different music accounts to connect.
+- [ ] **Images** - I included an image for the logo of my website. I also included Apple Music and Spotify logos in the accounts page.
+- [x] **DB/Login** - Input box and submit button for login/registration. The playlists and songs will be retrieved from the database.
+- [x] **WebSocket** - The count of registered users will be updated by a WebSocket.
