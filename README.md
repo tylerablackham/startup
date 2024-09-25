@@ -6,8 +6,8 @@ Startup Project for CS 260
 ## Startup Specification - TuneTransfer
 
 ### What is TuneTransfer?
-The goal of TuneTransfer is to make sharing music easier. There are many different music streaming services like Apple
-Music, Spotify, Youtube Music, Amazon Music, and many more. For the sake of simplicity, TuneTransfer will first focus on
+The goal of TuneTransfer is to make sharing music easier. There are many different music-streaming services like Apple
+Music, Spotify, YouTube Music, Amazon Music, and many more. For the sake of simplicity, TuneTransfer will first focus on
 Apple Music and Spotify, two of the most popular services out there. TuneTransfer will help you take playlists that you 
 have created or listened to on one streaming service and create a copy of that playlist on another streaming service, 
 provided one has an account for both streaming services. It will also be able to keep track of said playlists so that
@@ -44,13 +44,14 @@ and backend endpoint calls.
 
 ## Deliverables
 
-### HTML deliverable
+### HTML Deliverable
 For this deliverable I built out the structure of my application using HTML.
 
 - [x] **HTML pages** - 4 HTML pages that represent the ability to log in, register, view and make transfers, and connect music accounts.
 - [x] **Links** - The login page links to the register and transfers page. The register page links to the login and transfers page.
 The transfers page links to the accounts page. The accounts page links to the transfers page.
 - [x] **Text** - All the transferred playlists and songs will be represented in text. Text describes the different music accounts to connect.
-- [ ] **Images** - I included an image for the logo of my website. I also included Apple Music and Spotify logos in the accounts page.
+- [x] **Images** - I included an image for the logo of my website. I also included Apple Music and Spotify logos in the accounts page.
 - [x] **DB/Login** - Input box and submit button for login/registration. The playlists and songs will be retrieved from the database.
 - [x] **WebSocket** - The count of registered users will be updated by a WebSocket.
+- [x] **3rd Party Services** - 2 Buttons in the accounts page that will make calls to the 3rd party services for Apple Music and Spotify.
