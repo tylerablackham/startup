@@ -7,3 +7,6 @@ _Will contain the notes for the semester_
 
 ## HTML
 - Run this command to deploy the html files `./deployFiles.sh -k <yourpemkey> -h <yourdomain> -s startup`
+
+## CSS
+- Use @media to detect when the screen is a certain size
