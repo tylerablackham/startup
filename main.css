@@ -1,16 +1,23 @@
 /*
-Color Pallette
+Color Palette
 Very Dark: #2E073F
 Dark: #7A1CAC
 Medium: #BA68c8
 Light: #EBD3F8
 */
 
+/*GENERAL HEADER CSS*/
 
 header {
     background-color: #BA68c8;
     text-align: center;
     margin-bottom: 20px;
+}
+
+.Title {
+    text-align: center;
+    display: flex;
+    flex-direction: row;
 }
 
 header div {
@@ -43,6 +50,17 @@ nav a {
 
 hr {
     margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    header div {
+        flex-direction: column; /* Stack the elements vertically */
+    }
+
+    .UsersNumber {
+        margin-left: 0; /* Reset the left margin when stacked vertically */
+        margin-top: 10px; /* Add space above the UsersNumber when it moves down */
+    }
 }
 
 /*GENERAL FOOTER CSS*/
