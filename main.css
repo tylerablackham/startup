@@ -63,6 +63,28 @@ hr {
     }
 }
 
+/*GENERAL MAIN CSS*/
+
+main {
+    max-width: 600px; /* Limit the width of the main content */
+    margin: 50px auto; /* Center the main content on the page */
+    padding: 20px;
+    background-color: #EBD3F8; /* Light background for clarity */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    border: 2px solid #7A1CAC; /* Outline for the main content */
+}
+
+/* Add borders to specific sections inside main */
+main h1 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #7A1CAC; /* Adds an underline */
+    padding-bottom: 10px; /* Space between text and border */
+}
+
 /*GENERAL FOOTER CSS*/
 
 footer {
