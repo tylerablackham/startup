@@ -1,8 +1,8 @@
 /*
 Color Palette
 Very Dark: #2E073F for footer background
-Dark: #7A1CAC for header background
-Medium: #BA68c8 for outline
+Dark: #7A1CAC for outline
+Medium: #BA68c8 for header background
 Light: #EBD3F8 for light background
 */
 
@@ -12,7 +12,7 @@ header {
     background-color: #BA68c8;
     text-align: center;
     margin-bottom: 20px;
-    border-bottom: 2px solid #8E44AD;
+    border-bottom: 2px solid #7A1CAC;
 }
 
 .Title {
@@ -44,7 +44,7 @@ nav menu {
 }
 
 nav a {
-    border-bottom: 2px solid #8E44AD;
+    border-bottom: 2px solid #7A1CAC;
     text-decoration: none;
     font-size: 1.2em;
     color: #000;
@@ -65,14 +65,14 @@ nav a {
 /*GENERAL MAIN CSS*/
 
 main {
-    max-width: 600px; /* Limit the width of the main content */
+    max-width: 800px; /* Limit the width of the main content */
     /* Center the main content on the page */
     padding: 20px;
     background-color: #EBD3F8; /* Light background for clarity */
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
     overflow-y: auto; /* Allow scrolling if content overflows */
-    border: 2px solid #8E44AD; /* Outline for the main content */
+    border: 2px solid #7A1CAC; /* Outline for the main content */
     margin: 50px auto 125px;
 }
 
@@ -81,7 +81,7 @@ main h1 {
     text-align: center;
     font-size: 2em;
     margin-bottom: 20px;
-    border-bottom: 2px solid #8E44AD; /* Adds an underline */
+    border-bottom: 2px solid #7A1CAC; /* Adds an underline */
     padding-bottom: 10px; /* Space between text and border */
 }
 
@@ -96,7 +96,7 @@ footer {
     width: 100%;
     padding: 10px 0;
     background-color: #2E073F; /* Optional: Slight background to differentiate */
-    border-top: 2px solid #8E44AD; /* Optional: Give a subtle border to the top of the footer */
+    border-top: 2px solid #7A1CAC; /* Optional: Give a subtle border to the top of the footer */
 }
 
 footer hr {

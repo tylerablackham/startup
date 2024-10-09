@@ -51,12 +51,3 @@ p {
     margin-top: 10px;
     color: #666;
 }
-
-a {
-    color: #7A1CAC;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}

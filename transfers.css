@@ -1,0 +1,55 @@
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.Transfers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 10px 30px 10px;
+}
+
+.Playlists, .Songs {
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+main ul {
+    list-style-type: none;
+    margin: 0;
+    height: 250px; /* Set a max height for the scrollable area */
+    overflow-y: auto;
+    border: 1px solid #ccc; /* Optional: adds a border around the scrollable area */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+main li {
+    background-color: #f9f9f9;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #7A1CAC;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #7A1CAC;
+}
