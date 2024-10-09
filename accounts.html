@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Accounts</title>
+  <title>Tune Transfer</title>
   <link rel="icon" href="icons/favicon.ico" />
 
   <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="accounts.css" />
 
   <!-- Include bootstrap CSS framework -->
   <link
@@ -36,17 +37,19 @@
 <main>
   <div>
     <h1>Connect Streaming Accounts</h1>
-    <div>
-      <img alt="Apple Music Logo" src="icons/apple_music_logo.png" width="55">
-      <button>Connect Apple Music</button>
+    <div class="Music">
+      <div class="AppleMusic">
+        <img alt="Apple Music Logo" src="icons/apple_music_logo.png">
+        <button>Connect Apple Music</button>
         <!--Placeholder for 3rd party call to Apple Music-->
-      <p>Not Connected</p>
-    </div>
-    <div>
-      <img alt="Spotify Logo" src="icons/spotify_logo.png" width="50">
-      <button>Connect Spotify</button>
+        <p>Not Connected</p>
+      </div>
+      <div class="Spotify">
+        <img alt="Spotify Logo" src="icons/spotify_logo.png">
+        <button>Connect Spotify</button>
         <!--Placeholder for 3rd party call to Spotify-->
-      <p>Connected as: [username]</p>
+        <p>Connected as: [username]</p>
+      </div>
     </div>
     <div>
       <form method="get" action="transfers.html">
@@ -54,7 +57,6 @@
       </form>
     </div>
   </div>
-
 </main>
 
 <footer>
