@@ -66,13 +66,14 @@ nav a {
 
 main {
     max-width: 600px; /* Limit the width of the main content */
-    margin: 50px auto; /* Center the main content on the page */
+    /* Center the main content on the page */
     padding: 20px;
     background-color: #EBD3F8; /* Light background for clarity */
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
     overflow-y: auto; /* Allow scrolling if content overflows */
     border: 2px solid #8E44AD; /* Outline for the main content */
+    margin: 50px auto 125px;
 }
 
 /* Add borders to specific sections inside main */
