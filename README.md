@@ -55,3 +55,17 @@ The transfers page links to the accounts page. The accounts page links to the tr
 - [x] **DB/Login** - Input box and submit button for login/registration. The playlists and songs will be retrieved from the database.
 - [x] **WebSocket** - The count of registered users will be updated by a WebSocket.
 - [x] **3rd Party Services** - 2 Buttons in the accounts page that will make calls to the 3rd party services for Apple Music and Spotify.
+
+## CSS deliverable
+For this deliverable I properly styled the application into its final appearance.
+
+- [x] **Header, footer, and main content** - All styled in the body with a color theme.
+- [x] **Navigation elements** - I got rid of the bullet points in each element. Added color and styled in horizontal 
+direction.
+- [x] **Responsive to window resizing** - My app fits well on all window sizes and devices. Some of the elements are 
+styled differently depending on the size of the window.
+- [x] **Application elements** - Used good spacing in between elements. All elements were colored according to the same
+color scheme.
+- [x] **Application text content** - Consistent fonts and colors between all the text elements.
+- [x] **Application images** - My images have consistent padding and spacing to make them easier to look at. My logo 
+image now matches the color scheme as well.
