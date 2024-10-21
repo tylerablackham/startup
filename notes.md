@@ -11,3 +11,6 @@ _Will contain the notes for the semester_
 ## CSS
 - Use @media to detect when the screen is a certain size
 - [Bootstrap Demo](https://codepen.io/leesjensen/pen/JjZavjW)
+
+## JavaScript
+- `document` is how you access the DOM.
