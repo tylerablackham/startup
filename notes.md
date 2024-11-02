@@ -29,3 +29,6 @@ _Will contain the notes for the semester_
 - [DOM](MoreNotes/javascript_dom.md)
 - [Promises](MoreNotes/javascript_promises.md)
 - [Async/Await](MoreNotes/javascript_asyncAwait.md)
+
+## React
+- [Tic Tac Toe Example](https://codesandbox.io/p/sandbox/react-dev-forked-48jw78?file=%2Fsrc%2FApp.js%3A46%2C34)
