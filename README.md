@@ -37,10 +37,10 @@ and backend endpoint calls.
 - **WebSocket** - As each user creates a user account, it will update the live count.
 
 ### Sketches
-<img src="StartupSpecificationSketches/TuneTransferSignInSketch.png" alt="isolated" width="500">
-<img src="StartupSpecificationSketches/TuneTransferAccountCreationSketch.png" alt="isolated" width="500">
-<img src="StartupSpecificationSketches/TuneTransferPlaylistTransfersSketch.png" alt="isolated" width="500">
-<img src="StartupSpecificationSketches/TuneTransferAccountConnectionSketch.png" alt="isolated" width="500">
+<img src="_startupSpecificationSketches/TuneTransferSignInSketch.png" alt="isolated" width="500">
+<img src="_startupSpecificationSketches/TuneTransferAccountCreationSketch.png" alt="isolated" width="500">
+<img src="_startupSpecificationSketches/TuneTransferPlaylistTransfersSketch.png" alt="isolated" width="500">
+<img src="_startupSpecificationSketches/TuneTransferAccountConnectionSketch.png" alt="isolated" width="500">
 
 ## Deliverables
 

@@ -1,1 +1,0 @@
-Some text (different modifications) to the file
