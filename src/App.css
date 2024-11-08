@@ -1,42 +1,105 @@
+/* App.css */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+header {
+  background-color: #BA68c8;
+  color: black;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+header .Title {
+  display: flex;
+  align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+header .Title h1 {
+  margin-left: 0.5em;
+  font-size: 1.5em;
 }
 
-.card {
+header nav menu {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+header nav menu li {
+  margin-right: 1em;
+}
+
+header nav menu li a {
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+header nav menu li a:hover {
+  text-decoration: underline;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 150px); /* Adjusts for header/footer space */
   padding: 2em;
 }
 
-.read-the-docs {
-  color: #888;
+h1 {
+  font-size: 2em;
+  margin-bottom: 1em;
+  color: black;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 0.8em;
+  font-size: 1em;
+  font-weight: bold;
+  color: #fff;
+  background-color: #7A1CAC;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: #7A1CAC;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+footer a {
+  color: #EBD3F8;
+  text-decoration: none;
+}
+
+footer {
+  background-color: #2E073F;
+  color: #fff;
+  text-align: center;
+  padding: 1em;
+  position: sticky;
+  bottom: 0;
 }
