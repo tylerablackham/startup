@@ -1,7 +1,6 @@
-import {Link} from "react-router-dom";
-import React from "react";
+import { Link } from "react-router-dom"
 
-const Header = () => (
+const Header = ({ isLoggedIn }) => (
     <header>
         <div>
             <div className="Title">
@@ -11,10 +10,17 @@ const Header = () => (
         </div>
         <nav>
             <menu>
-                <li><Link to="/login">Login</Link></li>
-                <li><Link to="/register">Register</Link></li>
-                <li><Link to="/transfers">Transfers</Link></li>
-                <li><Link to="/accounts">Accounts</Link></li>
+                {isLoggedIn ? (
+                    <>
+                        <li><Link to="/transfers">Transfers</Link></li>
+                        <li><Link to="/accounts">Accounts</Link></li>
+                    </>
+                ) : (
+                    <>
+                        <li><Link to="/login">Login</Link></li>
+                        <li><Link to="/register">Register</Link></li>
+                    </>
+                )}
             </menu>
         </nav>
     </header>

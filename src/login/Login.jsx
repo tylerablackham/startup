@@ -1,14 +1,18 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react'
+import {Link, useNavigate} from 'react-router-dom'
 
-const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+const Login = ({ onLogin }) => {
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Logging in with:', { username, password });
-    };
+        e.preventDefault()
+        console.log('Logging in with:', { username, password })
+        // Simulate login success
+        onLogin()
+        navigate('/transfers')
+    }
 
     return (
         <main>
@@ -38,7 +42,7 @@ const Login = () => {
                 </div>
             </form>
         </main>
-    );
-};
+    )
+}
 
-export default Login;
+export default Login

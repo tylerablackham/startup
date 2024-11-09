@@ -1,20 +1,23 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react'
+import {Link, useNavigate} from 'react-router-dom'
 
-const Register = () => {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+const Register = ({ onLogin }) => {
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         if (password !== confirmPassword) {
-            alert("Passwords do not match!");
-            return;
+            alert("Passwords do not match!")
+            return
         }
-        console.log('Registering with:', { username, email, password });
-    };
+        console.log('Registering with:', { username, email, password })
+        onLogin()
+        navigate('/transfers')
+    }
 
     return (
         <main>
@@ -62,7 +65,7 @@ const Register = () => {
                 </div>
             </form>
         </main>
-    );
-};
+    )
+}
 
-export default Register;
+export default Register
