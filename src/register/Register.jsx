@@ -15,7 +15,7 @@ const Register = ({ onLogin }) => {
             return
         }
         console.log('Registering with:', { username, email, password })
-        onLogin()
+        onLogin(username)
         navigate('/transfers')
     }
 

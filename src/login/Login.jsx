@@ -9,8 +9,7 @@ const Login = ({ onLogin }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log('Logging in with:', { username, password })
-        // Simulate login success
-        onLogin()
+        onLogin(username)
         navigate('/transfers')
     }
 

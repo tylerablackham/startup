@@ -10,16 +10,21 @@ import {useState} from "react"
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [username, setUsername] = useState('')
+    const handleLogin = (username) => {
+        setIsLoggedIn(true)
+        setUsername(username)
+    }
 
     return (
         <div>
-            <Header isLoggedIn={isLoggedIn} />
+            <Header isLoggedIn={isLoggedIn} username={username}/>
             <main>
                 <Routes>
-                    <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />} />
-                    <Route path="/register" element={<Register onLogin={() => setIsLoggedIn(true)} />}/>
-                    <Route path="/transfers" element={<Transfers/>}/>
-                    <Route path="/accounts" element={<Accounts/>}/>
+                    <Route path="/login" element={<Login onLogin={handleLogin} />} />
+                    <Route path="/register" element={<Register onLogin={handleLogin} />} />
+                    <Route path="/transfers" element={isLoggedIn ? <Transfers /> : <Navigate to="/login" />} />
+                    <Route path="/accounts" element={isLoggedIn ? <Accounts /> : <Navigate to="/login" />} />
                     <Route path="/" element={<Navigate to="/login" />}/>
                     <Route path="*" element={<Navigate to="/login" />}/>
                 </Routes>
