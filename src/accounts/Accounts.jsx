@@ -32,32 +32,30 @@ const Accounts = () => {
 
     return (
         <main>
-            <div>
-                <h1>Connect Streaming Accounts</h1>
+            <h1>Connect Streaming Accounts</h1>
 
-                <form onSubmit={handleSubmit}>
-                    <div className="Music">
-                        <div className="AppleMusic">
-                            <img alt="Apple Music Logo" src="icons/apple_music_logo.png"/>
-                            <button onClick={handleAppleMusicConnect}>
-                                {appleMusicConnected ? "Connected" : "Connect Apple Music"}
-                            </button>
-                            <p>{appleMusicConnected ? `Connected As: ${appleMusicUsername}` : "Not Connected"}</p>
-                        </div>
+            <form onSubmit={handleSubmit}>
+                <div className="Music">
+                    <div className="AppleMusic">
+                        <img alt="Apple Music Logo" src="icons/apple_music_logo.png"/>
+                        <button onClick={handleAppleMusicConnect}>
+                            {appleMusicConnected ? "Change Connection" : "Connect Apple Music"}
+                        </button>
+                        <p>{appleMusicConnected ? `Connected As: ${appleMusicUsername}` : "Not Connected"}</p>
+                    </div>
 
-                        <div className="Spotify">
-                            <img alt="Spotify Logo" src="icons/spotify_logo.png"/>
-                            <button onClick={handleSpotifyConnect}>
-                                {spotifyConnected ? "Connected" : "Connect Spotify"}
-                            </button>
-                            <p>{spotifyConnected ? `Connected As: ${spotifyUsername}` : "Not Connected"}</p>
-                        </div>
+                    <div className="Spotify">
+                        <img alt="Spotify Logo" src="icons/spotify_logo.png"/>
+                        <button onClick={handleSpotifyConnect}>
+                            {spotifyConnected ? "Change Connection" : "Connect Spotify"}
+                        </button>
+                        <p>{spotifyConnected ? `Connected As: ${spotifyUsername}` : "Not Connected"}</p>
                     </div>
-                    <div>
-                        <button type="submit">Back to Transfers</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div>
+                    <button type="submit">Back to Transfers</button>
+                </div>
+            </form>
         </main>
     );
 };
