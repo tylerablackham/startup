@@ -8,7 +8,7 @@ const Header = ({ isLoggedIn, username }) => {
     return (<header>
         <div>
             <div className="Title">
-                <img alt="Tune Transfer Logo" src="icons/favicon.ico" width="50"/>
+                <img alt="Tune Transfer Logo" src="../../favicon.ico" width="50"/>
                 <h1>TuneTransfer<sup>&reg;</sup> <br/>{numUsers} Users!</h1>
             </div>
         </div>
