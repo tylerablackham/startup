@@ -69,3 +69,18 @@ color scheme.
 - [x] **Application text content** - Consistent fonts and colors between all the text elements.
 - [x] **Application images** - My images have consistent padding and spacing to make them easier to look at. My logo 
 image now matches the color scheme as well.
+
+## React deliverable
+For this deliverable I used JavaScript and React so that the application completely works for a single user. I also 
+added placeholders for future technology.
+
+- [x] **Bundled and transpiled** - done!
+- [x] **Components** - Login, Register, Transfers, Accounts.
+  - [x] **login** - When you press enter or the login button it takes you to the transfers page.
+  - [x] **register** - When you press enter or the register button it takes you to the transfers page.
+  - [x] **transfers** - Displays previous transferred playlist and songs. Uses dumby data which will be replaced with 
+real data made by future API calls.
+  - [x] **accounts** - Has buttons that will connect to the different music accounts. Actual functionality will be implemented
+using future API calls.
+- [x] **Router** - Routing between login, register, transfers, and accounts components.
+- [x] **Hooks** - Using `UseState` to keep track of variables such as username, playlists, songs, and loggedIn.
