@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './Login.css'; // Optional: Add a CSS file for styling
+import { Link } from 'react-router-dom';
+import './Login.css';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -7,7 +8,6 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle login logic here
         console.log('Logging in with:', { username, password });
     };
 
@@ -35,7 +35,7 @@ const Login = () => {
                 </div>
                 <button type="submit">Login</button>
                 <div>
-                    <p>Don&#39;t have an account? <a href="/register">Register Here</a></p>
+                    <p>Don&#39;t have an account? <Link to="/register">Register Here</Link></p>
                 </div>
             </form>
         </main>

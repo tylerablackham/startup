@@ -86,6 +86,17 @@ button[type="submit"]:hover {
   background-color: #7A1CAC;
 }
 
+input[type="text"],
+input[type="password"],
+input[type="email"]{
+  width: 100%;
+  padding: 0.8em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
 a:hover {
   text-decoration: underline;
 }

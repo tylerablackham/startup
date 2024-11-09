@@ -1,3 +1,6 @@
+import {Link} from "react-router-dom";
+import React from "react";
+
 const Header = () => (
     <header>
         <div>
@@ -8,8 +11,8 @@ const Header = () => (
         </div>
         <nav>
             <menu>
-                <li><a href="index.html">Login</a></li>
-                <li><a href="register.html">Register</a></li>
+                <li><Link to="/login">Login</Link></li>
+                <li><Link to="/register">Register</Link></li>
                 <li><a href="transfers.html">Home</a></li>
                 <li><a href="accounts.html">Accounts</a></li>
             </menu>
