@@ -21,6 +21,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 2px solid #7A1CAC;
 }
 
 header .Title {
@@ -59,7 +60,7 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 150px); /* Adjusts for header/footer space */
+  height: calc(90vh - 150px); /* Adjusts for header/footer space */
   padding: 2em;
 }
 
@@ -97,6 +98,28 @@ input[type="email"]{
   box-sizing: border-box;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  background-color: #EBD3F8;
+  padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #7A1CAC;
+}
+
+form div {
+  margin-bottom: 1em;
+}
+
+form p {
+  margin: 0 0 0.5em 0;
+  font-weight: bold;
+  color: #333;
+}
+
 a:hover {
   text-decoration: underline;
 }
@@ -113,4 +136,5 @@ footer {
   padding: 1em;
   position: sticky;
   bottom: 0;
+  border-top: 2px solid #7A1CAC;
 }
