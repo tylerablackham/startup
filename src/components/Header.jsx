@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom"
+import {useState} from "react";
 
-const Header = ({ isLoggedIn, username }) => (
-    <header>
+
+const Header = ({ isLoggedIn, username }) => {
+    const [numUsers] = useState('2')
+
+    return (<header>
         <div>
             <div className="Title">
                 <img alt="Tune Transfer Logo" src="icons/favicon.ico" width="50"/>
-                <h1>TuneTransfer<sup>&reg;</sup></h1>
+                <h1>TuneTransfer<sup>&reg;</sup> <br/>{numUsers} Users!</h1>
             </div>
         </div>
         <nav>
@@ -18,13 +22,13 @@ const Header = ({ isLoggedIn, username }) => (
                     </>
                 ) : (
                     <>
-                    <li><Link to="/login">Login</Link></li>
+                        <li><Link to="/login">Login</Link></li>
                         <li><Link to="/register">Register</Link></li>
                     </>
                 )}
             </menu>
         </nav>
-    </header>
-)
+    </header>)
+}
 
 export default Header
