@@ -6,6 +6,7 @@ import Login from "./login/Login.jsx";
 import {Navigate, Route, Routes} from "react-router-dom";
 import Register from "./register/Register.jsx";
 import Transfers from "./transfers/Transfers.jsx";
+import Accounts from "./accounts/Accounts.jsx";
 
 function App() {
 // const [count, setCount] = useState(0)
@@ -18,7 +19,9 @@ function App() {
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/transfers" element={<Transfers/>}/>
+                    <Route path="/accounts" element={<Accounts/>}/>
                     <Route path="/" element={<Navigate to="/login" />}/>
+                    <Route path="*" element={<Navigate to="/login" />}/>
                 </Routes>
             </main>
             <Footer/>
