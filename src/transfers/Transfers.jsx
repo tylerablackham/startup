@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Transfers.css';
+import {useNavigate} from "react-router-dom";
 
 const Transfers = () => {
     // Mock data for playlists and songs - replace with real data from your database/API
@@ -10,6 +11,12 @@ const Transfers = () => {
     const [songs, setSongs] = useState([
         "Song 1", "Song 2", "Song 3", "Song 4", "Song 5", "Song 6"
     ]);
+
+    const navigate = useNavigate()
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        navigate('/accounts')
+    }
 
     const handleNewTransfer = () => {
         alert("Starting a new transfer...");
@@ -30,7 +37,7 @@ const Transfers = () => {
         <main>
             <h1>Transfers</h1>
 
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="Transfers">
                     <div className="Playlists">
                         <h2>Playlists</h2>
@@ -60,7 +67,7 @@ const Transfers = () => {
                 </div>
 
                 <div className="ToAccounts">
-                    <button onClick={() => window.location.href = "/accounts"}>
+                    <button type="submit">
                         Connect Accounts
                     </button>
                 </div>

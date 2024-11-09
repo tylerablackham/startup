@@ -1,6 +1,7 @@
 // src/components/Accounts.jsx
 import React, { useState } from 'react';
 import './Accounts.css';
+import {useNavigate} from "react-router-dom";
 
 const Accounts = () => {
     // State variables to track connection status
@@ -8,6 +9,12 @@ const Accounts = () => {
     const [appleMusicUsername, setAppleMusicUsername] = useState("username123"); // Replace with actual username if available
     const [spotifyConnected, setSpotifyConnected] = useState(true); // Assuming Spotify is connected for example purposes
     const [spotifyUsername, setSpotifyUsername] = useState("username123"); // Replace with actual username if available
+
+    const navigate = useNavigate()
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        navigate('/transfers')
+    }
 
     const handleAppleMusicConnect = () => {
         // Placeholder for actual Apple Music connection logic
@@ -28,7 +35,7 @@ const Accounts = () => {
             <div>
                 <h1>Connect Streaming Accounts</h1>
 
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="Music">
                         <div className="AppleMusic">
                             <img alt="Apple Music Logo" src="icons/apple_music_logo.png"/>
@@ -47,9 +54,7 @@ const Accounts = () => {
                         </div>
                     </div>
                     <div>
-                        <button onClick={() => window.location.href = "/transfers"}>
-                            Back to Transfers
-                        </button>
+                        <button type="submit">Back to Transfers</button>
                     </div>
                 </form>
             </div>
