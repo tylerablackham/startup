@@ -1,0 +1,14 @@
+{
+  "name": "startup-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Tyler Blackham",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "uuid": "^10.0.0"
+  }
+}
