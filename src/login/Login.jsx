@@ -32,7 +32,7 @@ const Login = ({ onLogin }) => {
             alert('Both fields are required!')
             return
         }
-        console.log('Attempting login with:', {username, password})
+        console.log('Attempting login')
         await loginUser()
     }
 

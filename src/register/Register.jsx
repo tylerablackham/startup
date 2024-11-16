@@ -8,15 +8,34 @@ const Register = ({ onLogin }) => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const navigate = useNavigate()
 
-    const handleSubmit = (e) => {
+    async function registerUser() {
+        const response = await fetch('/api/auth/create', {
+            method: 'POST',
+            body: JSON.stringify({username, password, email}),
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+            }
+        })
+        if (response?.status !== 200) {
+            const body = await response.json()
+            alert(`Error: ${body.msg}`)
+        }
+        else {
+            const { token } = await response.json()
+            sessionStorage.setItem('authToken', token)
+            onLogin(username)
+            navigate('/transfers')
+        }
+    }
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
         if (password !== confirmPassword) {
             alert("Passwords do not match!")
             return
         }
-        console.log('Registering with:', { username, email, password })
-        onLogin(username)
-        navigate('/transfers')
+        console.log('Attempting register')
+        await registerUser()
     }
 
     return (
