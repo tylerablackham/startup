@@ -42,10 +42,10 @@ apiRouter.post('/auth/create', async (req, res) => {
             username: req.body.username,
             email: req.body.email,
             password: req.body.password,
-            token: uuid.v4() }
+            sessionToken: uuid.v4() }
         users[user.username] = user
         numUsers += 1
-        res.send({ token: user.token })
+        res.send({ sessionToken: user.sessionToken })
     }
 })
 
@@ -53,8 +53,8 @@ apiRouter.post('/auth/login', async (req, res) => {
     const user = users[req.body.username]
     if (user) {
         if (req.body.password === user.password) {
-            user.token = uuid.v4()
-            res.send({ token: user.token })
+            user.sessionToken = uuid.v4()
+            res.send({ sessionToken: user.sessionToken })
             return
         }
     }
@@ -62,9 +62,9 @@ apiRouter.post('/auth/login', async (req, res) => {
 })
 
 apiRouter.delete('/auth/logout', async (req, res) => {
-    const user = Object.values(users).find((u) => u.token === req.body.token)
+    const user = Object.values(users).find((u) => u.sessionToken === req.body.sessionToken)
     if (user) {
-        delete user.token
+        delete user.sessionToken
     }
     res.status(204).end()
 })
@@ -100,6 +100,7 @@ apiRouter.get('/spotify/callback', async (req, res) => {
     });
 
     const accessToken = tokenResponse.data.access_token
+    const refreshToken = tokenResponse.data.refresh_token
 
     // Use the access token to fetch playlists
     try {

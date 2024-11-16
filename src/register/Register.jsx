@@ -21,8 +21,8 @@ const Register = ({ onLogin }) => {
             alert(`Error: ${body.msg}`)
         }
         else {
-            const { token } = await response.json()
-            sessionStorage.setItem('authToken', token)
+            const { sessionToken } = await response.json()
+            sessionStorage.setItem('sessionToken', sessionToken)
             onLogin(username)
             navigate('/transfers')
         }

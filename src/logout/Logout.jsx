@@ -6,13 +6,13 @@ const Logout = ({ onLogout }) => {
 
     useEffect(() => {
         async function handleLogout() {
-            const token = sessionStorage.getItem('authToken')
-            if (token) {
+            const sessionToken = sessionStorage.getItem('sessionToken')
+            if (sessionToken) {
                 try {
                     // Call the logout API
                     await fetch('/api/auth/logout', {
                         method: 'DELETE',
-                        body: JSON.stringify({ token }),
+                        body: JSON.stringify({ sessionToken }),
                         headers: {
                             'Content-Type': 'application/json',
                         },
@@ -23,7 +23,7 @@ const Logout = ({ onLogout }) => {
             }
 
             // Clear the token from storage regardless of API call success
-            sessionStorage.removeItem('authToken')
+            sessionStorage.removeItem('sessionToken')
 
             // Redirect immediately
             navigate('/login')
