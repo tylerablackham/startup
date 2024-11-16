@@ -19,6 +19,7 @@ const Header = ({ isLoggedIn, username }) => {
                         <li>Welcome, {username}!</li>
                         <li><Link to="/transfers">Transfers</Link></li>
                         <li><Link to="/accounts">Accounts</Link></li>
+                        <li><Link to="/logout">Logout</Link></li>
                     </>
                 ) : (
                     <>

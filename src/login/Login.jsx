@@ -6,11 +6,34 @@ const Login = ({ onLogin }) => {
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
 
-    const handleSubmit = (e) => {
+    async function loginUser() {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({ username, password }),
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+            }
+        })
+        if (response?.status !== 200) {
+            const body = await response.json()
+            alert(`Error: ${body.msg}`)
+        }
+        else {
+            const { token } = await response.json()
+            sessionStorage.setItem('authToken', token)
+            onLogin(username)
+            navigate('/transfers')
+        }
+    }
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log('Logging in with:', { username, password })
-        onLogin(username)
-        navigate('/transfers')
+        if (!username || !password) {
+            alert('Both fields are required!')
+            return
+        }
+        console.log('Attempting login with:', {username, password})
+        await loginUser()
     }
 
     return (

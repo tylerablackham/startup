@@ -3,7 +3,13 @@ import * as uuid from "uuid";
 
 const app = express()
 
-let users = {}
+let users = {
+    'tyler': {
+        username: 'tyler',
+        password: 'pass',
+        email: 'email@tyler.com',
+    }
+}
 let numUsers = 0
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000
