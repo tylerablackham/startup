@@ -115,7 +115,7 @@ apiRouter.get('/spotify/callback', async (req, res) => {
         });
         const username = response.data.display_name;
 
-        res.json({
+        res.send({
             accessToken,
             refreshToken,
             expirationDate,
