@@ -17,6 +17,9 @@ let users = {
         username: 'tyler',
         password: 'pass',
         email: 'email@tyler.com',
+        sessionToken: null,
+        spotifyAccessToken: null,
+        spotifyRefreshToken: null
     }
 }
 let numUsers = 0
@@ -87,34 +90,30 @@ apiRouter.get('/spotify/callback', async (req, res) => {
         return res.status(400).send('Authorization code is missing')
     }
 
-    // Exchange the code for an access token
-    const tokenResponse = await axios.post('https://accounts.spotify.com/api/token', querystring.stringify({
-        grant_type: 'authorization_code',
-        code: code,
-        redirect_uri: REDIRECT_URI,
-    }), {
-        headers: {
-            'Authorization': `Basic ${Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-    });
-
-    const accessToken = tokenResponse.data.access_token
-    const refreshToken = tokenResponse.data.refresh_token
-
-    // Use the access token to fetch playlists
     try {
-        const playlistsResponse = await axios.get('https://api.spotify.com/v1/me/playlists', {
+        // Exchange the code for an access token
+        const tokenResponse = await axios.post('https://accounts.spotify.com/api/token', querystring.stringify({
+            grant_type: 'authorization_code',
+            code: code,
+            redirect_uri: REDIRECT_URI,
+        }), {
             headers: {
-                Authorization: `Bearer ${accessToken}`,
+                'Authorization': `Basic ${Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')}`,
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
-        });
-        const playlists = playlistsResponse.data.items;
-        res.json({ playlists });
-    } catch (error) {
-        console.error('Error fetching playlists:', error);
-        res.status(500).send('Failed to fetch playlists')
+        })
+
+        const accessToken = tokenResponse.data.access_token
+        const refreshToken = tokenResponse.data.refresh_token
+        res.json({
+            accessToken,
+            refreshToken
+        })
+    } catch (e) {
+        console.error('Error exchanging code for tokens: ', e)
+        res.status(500).send('Failed to exchange authorization code for tokens')
     }
+
 })
 
 app.use((_req, res) => {
