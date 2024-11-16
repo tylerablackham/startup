@@ -4,6 +4,7 @@ import * as uuid from "uuid";
 const app = express()
 
 let users = {}
+let numUsers = 0
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000
 app.use(express.json())
@@ -12,6 +13,10 @@ app.use(express.static('public'))
 
 var apiRouter = express.Router()
 app.use(`/api`, apiRouter)
+
+apiRouter.get('/auth/numUsers', async (req, res) => {
+    res.send({numUsers: numUsers})
+})
 
 apiRouter.post('/auth/create', async (req, res) => {
     const user = users[req.body.username]
@@ -24,7 +29,7 @@ apiRouter.post('/auth/create', async (req, res) => {
             password: req.body.password,
             token: uuid.v4() }
         users[user.username] = user
-
+        numUsers += 1
         res.send({ token: user.token })
     }
 })
