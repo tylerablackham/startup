@@ -84,3 +84,14 @@ real data made by future API calls.
 using future API calls.
 - [x] **Router** - Routing between login, register, transfers, and accounts components.
 - [x] **Hooks** - Using `UseState` to keep track of variables such as username, playlists, songs, and loggedIn.
+
+## Service deliverable
+
+For this deliverable I added backend endpoints that allow for logging in and connecting to Spotify.
+
+- [x] **Node.js/Express HTTP service** - done!
+- [x] **Static middleware for frontend** - done!
+- [x] **Calls to third party endpoints** - The backend is able to make calls to Spotify APIs. I was going to do Apple Music 
+too, but you have to pay to be able to access them, so I just stuck with Spotify.
+- [x] **Backend service endpoints** - Placeholders for login/register that stores the current user on the server. 
+- [x] **Frontend calls service endpoints** - I did this using the fetch function.
