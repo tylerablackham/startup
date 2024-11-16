@@ -17,7 +17,7 @@ let users = {
         username: 'tyler',
         password: 'pass',
         email: 'email@tyler.com',
-        sessionToken: null,
+        sessionToken: 0,
         spotifyAccessToken: null,
         spotifyRefreshToken: null
     }
@@ -105,15 +105,73 @@ apiRouter.get('/spotify/callback', async (req, res) => {
 
         const accessToken = tokenResponse.data.access_token
         const refreshToken = tokenResponse.data.refresh_token
+        const expiresIn = tokenResponse.data.expires_in
+        const expirationDate = Date.now() + expiresIn * 1000
+
+        const response = await axios.get('https://api.spotify.com/v1/me', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        const username = response.data.display_name;
+
         res.json({
             accessToken,
-            refreshToken
+            refreshToken,
+            expirationDate,
+            username
         })
     } catch (e) {
         console.error('Error exchanging code for tokens: ', e)
         res.status(500).send('Failed to exchange authorization code for tokens')
     }
+})
 
+apiRouter.post('/spotify/tokens', async (req, res) => {
+    const { sessionToken, accessToken, refreshToken, expirationDate } = req.body
+    const user = Object.values(users).find((u) => u.sessionToken === sessionToken)
+    if (user) {
+        user.spotifyAccessToken = accessToken
+        user.spotifyRefreshToken = refreshToken
+        user.spotifyExpirationDate = expirationDate
+        res.status(200).end()
+    }
+    else {
+        res.status(404).send('Failed to find user')
+    }
+})
+
+apiRouter.get('/spotify/playlists', async (req, res) => {
+    const sessionToken = req.headers['sessionToken']
+    const user = Object.values(users).find((u) => u.sessionToken === sessionToken)
+    if (user) {
+        await refreshSpotifyAccessTokenIfNeeded(user.username)
+        const accessToken = user.spotifyAccessToken
+        let playlists = []
+        let url = 'https://api.spotify.com/v1/me/playlists'
+
+        while (url) {
+            try {
+                const response = await axios.get(url, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                })
+
+                // Add the current page's playlists to the array
+                playlists = playlists.concat(response.data.items)
+
+                // Check if there's a next page
+                url = response.data.next
+            } catch (error) {
+                console.error('Error fetching playlists:', error)
+                res.status(500).send('Failed to fetch playlists')
+            }
+        }
+        res.json({playlists})
+    } else {
+        res.status(404).send('Failed to find user with session token')
+    }
 })
 
 app.use((_req, res) => {
@@ -123,3 +181,29 @@ app.use((_req, res) => {
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })
+
+async function refreshSpotifyAccessTokenIfNeeded(username) {
+    const user = users[username]
+    const now = Date.now();
+    if (user.spotifyExpirationDate && now > user.spotifyExpirationDate - 5 * 60 * 1000) { // Refresh 5 minutes before expiration
+        console.log('Access token is about to expire, refreshing...');
+        try {
+            const tokenResponse = await axios.post('https://accounts.spotify.com/api/token', querystring.stringify({
+                grant_type: 'refresh_token',
+                refresh_token: refreshToken,
+            }), {
+                headers: {
+                    'Authorization': `Basic ${Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')}`,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            });
+
+            user.spotifyAccessToken = tokenResponse.data.access_token;
+            user.spotifyExpirationDate = Date.now() + (tokenResponse.data.expires_in * 1000); // Update expiration time
+
+            console.log('Access token refreshed');
+        } catch (error) {
+            console.error('Error refreshing access token:', error);
+        }
+    }
+}
