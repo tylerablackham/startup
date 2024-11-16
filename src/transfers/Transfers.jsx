@@ -4,13 +4,9 @@ import {useNavigate} from "react-router-dom";
 
 const Transfers = () => {
     // Mock data for playlists and songs - replace with real data from your database/API
-    const [playlists, setPlaylists] = useState([
-        "Playlist 1", "Playlist 2", "Playlist 3", "Playlist 4"
-    ]);
+    const [playlists, setPlaylists] = useState([]);
     const [selectedPlaylist, setSelectedPlaylist] = useState("Playlist 1");
-    const [songs, setSongs] = useState([
-        "Song 1", "Song 2", "Song 3", "Song 4", "Song 5", "Song 6"
-    ]);
+    const [songs, setSongs] = useState([]);
 
     const navigate = useNavigate()
     const handleSubmit = (e) => {
