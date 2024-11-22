@@ -1,5 +1,5 @@
 import express from 'express'
-import * as uuid from "uuid"
+import * as uuid from 'uuid'
 import axios from 'axios'
 import querystring from 'querystring'
 import dotenv from 'dotenv'
