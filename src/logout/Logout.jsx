@@ -6,25 +6,17 @@ const Logout = ({ onLogout }) => {
 
     useEffect(() => {
         async function handleLogout() {
-            const sessionToken = sessionStorage.getItem('sessionToken')
-            if (sessionToken) {
-                try {
-                    // Call the logout API
-                    await fetch('/api/auth/logout', {
-                        method: 'DELETE',
-                        body: JSON.stringify({ sessionToken }),
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    })
-                } catch (error) {
-                    console.error('Logout failed:', error)
-                }
+            try {
+                // Call the logout API
+                await fetch('/api/auth/logout', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+            } catch (error) {
+                console.error('Logout failed:', error)
             }
-
-            // Clear the token from storage regardless of API call success
-            sessionStorage.removeItem('sessionToken')
-
             // Redirect immediately
             navigate('/login')
             onLogout()

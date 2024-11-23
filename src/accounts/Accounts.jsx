@@ -31,11 +31,9 @@ const Accounts = () => {
             }
         })
         const {accessToken, refreshToken, expirationDate, username} = await connectionResponse.json()
-        const sessionToken = sessionStorage.getItem("sessionToken")
-        console.log(sessionToken)
         await fetch('/api/spotify/token', {
             method: 'POST',
-            body: JSON.stringify({accessToken, refreshToken, expirationDate, sessionToken}),
+            body: JSON.stringify({accessToken, refreshToken, expirationDate}),
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8',
             }

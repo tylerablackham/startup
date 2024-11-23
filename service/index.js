@@ -191,7 +191,7 @@ apiRouter.get('/spotify/playlists', async (req, res) => {
 })
 
 app.use(function (err, req, res, next) {
-    res.status(500).send({ type: err.name, message: err.message });
+    res.status(500).send({ type: err.name, message: err.message })
 })
 
 app.use((_req, res) => {
