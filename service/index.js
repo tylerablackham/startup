@@ -3,7 +3,11 @@ import * as uuid from 'uuid'
 import axios from 'axios'
 import querystring from 'querystring'
 import dotenv from 'dotenv'
+import * as bcrypt from 'bcrypt'
+import * as DB from './database.js'
+import * as cookieParser from 'cookie-parser'
 
+const authCookieName = 'token'
 const app = express()
 
 dotenv.config()
@@ -12,24 +16,26 @@ const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET
 const REDIRECT_URI = 'http://localhost:4000/api/spotify/callback'
 
-let users = {
-    'tyler': {
-        username: 'tyler',
-        password: 'pass',
-        email: 'email@tyler.com',
-        sessionToken: 0,
-        spotifyAccessToken: null,
-        spotifyRefreshToken: null
-    }
-}
-let numUsers = 0
+// let users = {
+//     'tyler': {
+//         username: 'tyler',
+//         password: 'pass',
+//         email: 'email@tyler.com',
+//         sessionToken: 0,
+//         spotifyAccessToken: null,
+//         spotifyRefreshToken: null
+//     }
+// }
+let numUsers = DB.getNumUsers()
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000
 
 app.use(express.json())
+app.use(cookieParser())
 app.use(express.static('public'))
+app.set('trust proxy', true)
 
-var apiRouter = express.Router()
+const apiRouter = express.Router();
 app.use(`/api`, apiRouter)
 
 apiRouter.get('/auth/numUsers', async (req, res) => {
@@ -37,18 +43,15 @@ apiRouter.get('/auth/numUsers', async (req, res) => {
 })
 
 apiRouter.post('/auth/create', async (req, res) => {
-    const user = users[req.body.username]
-    if (user) {
+    if (await DB.getUser(req.body.username)) {
         res.status(409).send({ msg: 'Existing username' })
     } else {
-        const user = {
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password,
-            sessionToken: uuid.v4() }
-        users[user.username] = user
+        const user = await DB.createUser(req.body.username, req.body.email, req.body.password)
+        setAuthCookie(res, user.token)
         numUsers += 1
-        res.send({ sessionToken: user.sessionToken })
+        res.send({
+            id: user._id
+        })
     }
 })
 
@@ -206,4 +209,12 @@ async function refreshSpotifyAccessTokenIfNeeded(username) {
             console.error('Error refreshing access token:', error);
         }
     }
+}
+
+function setAuthCookie(res, authToken) {
+    res.cookie(authCookieName, authToken, {
+        secure: true,
+        httpOnly: true,
+        sameSite: 'strict',
+    })
 }
