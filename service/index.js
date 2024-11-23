@@ -71,10 +71,7 @@ apiRouter.post('/auth/login', async (req, res) => {
 })
 
 apiRouter.delete('/auth/logout', async (req, res) => {
-    const user = Object.values(users).find((u) => u.sessionToken === req.body.sessionToken)
-    if (user) {
-        delete user.sessionToken
-    }
+    res.clearCookie(authCookieName)
     res.status(204).end()
 })
 
