@@ -88,7 +88,7 @@ secureApiRouter.use(async (req, res, next) => {
     }
 })
 
-apiRouter.get('/spotify/connect', (req, res) => {
+secureApiRouter.get('/spotify/connect', (req, res) => {
     const scopes = 'playlist-read-private playlist-read-collaborative'
     const authURL = `https://accounts.spotify.com/authorize?${querystring.stringify({
         client_id: CLIENT_ID,
@@ -99,7 +99,7 @@ apiRouter.get('/spotify/connect', (req, res) => {
     res.redirect(authURL)
 })
 
-apiRouter.get('/spotify/callback', async (req, res) => {
+secureApiRouter.get('/spotify/callback', async (req, res) => {
     const { code } = req.query
 
     if (!code) {
@@ -143,7 +143,7 @@ apiRouter.get('/spotify/callback', async (req, res) => {
     }
 })
 
-apiRouter.post('/spotify/tokens', async (req, res) => {
+secureApiRouter.post('/spotify/tokens', async (req, res) => {
     const { sessionToken, accessToken, refreshToken, expirationDate } = req.body
     const user = Object.values(users).find((u) => u.sessionToken === sessionToken)
     if (user) {
