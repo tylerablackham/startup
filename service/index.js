@@ -5,7 +5,7 @@ import querystring from 'querystring'
 import dotenv from 'dotenv'
 import * as bcrypt from 'bcrypt'
 import * as DB from './database.js'
-import * as cookieParser from 'cookie-parser'
+import cookieParser from 'cookie-parser'
 
 const authCookieName = 'token'
 const app = express()
@@ -56,7 +56,7 @@ apiRouter.post('/auth/create', async (req, res) => {
 })
 
 apiRouter.post('/auth/login', async (req, res) => {
-    const user = DB.getUser(req.body.username)
+    const user = await DB.getUser(req.body.username)
     if (user) {
         if (await bcrypt.compare(req.body.password, user.password)) {
             setAuthCookie(res, user.token)
