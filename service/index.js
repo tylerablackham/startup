@@ -56,15 +56,18 @@ apiRouter.post('/auth/create', async (req, res) => {
 })
 
 apiRouter.post('/auth/login', async (req, res) => {
-    const user = users[req.body.username]
+    const user = DB.getUser(req.body.username)
     if (user) {
-        if (req.body.password === user.password) {
-            user.sessionToken = uuid.v4()
-            res.send({ sessionToken: user.sessionToken })
-            return
+        if (await bcrypt.compare(req.body.password, user.password)) {
+            setAuthCookie(res, user.token)
+            res.send({
+                id: user._id
+            })
         }
     }
-    res.status(401).send({msg: 'Invalid username or password'})
+    else {
+        res.status(401).send({msg: 'Invalid username or password'})
+    }
 })
 
 apiRouter.delete('/auth/logout', async (req, res) => {
