@@ -75,6 +75,19 @@ apiRouter.delete('/auth/logout', async (req, res) => {
     res.status(204).end()
 })
 
+const secureApiRouter = express.Router()
+apiRouter.use(secureApiRouter)
+
+secureApiRouter.use(async (req, res, next) => {
+    const authToken = req.cookies[authCookieName]
+    const user = await DB.getUserByToken(authToken)
+    if (user) {
+        next()
+    } else {
+        res.status(401).send({ msg: 'Unauthorized' })
+    }
+})
+
 apiRouter.get('/spotify/connect', (req, res) => {
     const scopes = 'playlist-read-private playlist-read-collaborative'
     const authURL = `https://accounts.spotify.com/authorize?${querystring.stringify({
