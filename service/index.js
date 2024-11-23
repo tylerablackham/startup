@@ -190,6 +190,10 @@ apiRouter.get('/spotify/playlists', async (req, res) => {
     }
 })
 
+app.use(function (err, req, res, next) {
+    res.status(500).send({ type: err.name, message: err.message });
+})
+
 app.use((_req, res) => {
     res.sendFile('index.html', { root: 'public' })
 })
