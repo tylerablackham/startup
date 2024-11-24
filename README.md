@@ -95,3 +95,15 @@ For this deliverable I added backend endpoints that allow for logging in and con
 too, but you have to pay to be able to access them, so I just stuck with Spotify.
 - [x] **Backend service endpoints** - Placeholders for login/register that stores the current user on the server. 
 - [x] **Frontend calls service endpoints** - I did this using the fetch function.
+
+## DB/Login deliverable
+
+For this deliverable I set up the database that allows the storage of users that register/login.
+
+- [x] **MongoDB Atlas database created** - done!
+- [x] **Stores data in MongoDB** - done!
+- [x] **User registration** - Creates a new account in the database.
+- [x] **User Authentication** - Authenticates users when logging in by checking the password stored in the database.
+- [x] **Use MongoDB to store credentials** - Stores the user information in the database.
+- [x] **Restricts functionality** - You can only access the application functionality after logging in. Uses cookies to
+restrict access.
