@@ -1,13 +1,16 @@
 import { MongoClient } from 'mongodb'
 import * as bcrypt from 'bcrypt'
 import * as uuid from 'uuid'
-import dotenv from 'dotenv'
 
-dotenv.config()
+import { readFile } from 'fs/promises';
+const filePath = new URL('./env.json', import.meta. url);
+const contents = await readFile(filePath, { encoding: 'utf8' })
+const env = JSON.parse(contents);
+
 const config = {
-  userName: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  hostname: process.env.DB_HOSTNAME
+  userName: env.DB_USERNAME,
+  password: env.DB_PASSWORD,
+  hostname: env.DB_HOSTNAME
 }
 
 const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`

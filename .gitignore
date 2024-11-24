@@ -13,4 +13,4 @@ node_modules
 npm-debug.log*
 .vscode
 dbConfig.json
-/service/.env
+/service/env.json

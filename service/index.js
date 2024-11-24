@@ -2,7 +2,6 @@ import express from 'express'
 import * as uuid from 'uuid'
 import axios from 'axios'
 import querystring from 'querystring'
-import dotenv from 'dotenv'
 import * as bcrypt from 'bcrypt'
 import * as DB from './database.js'
 import cookieParser from 'cookie-parser'
@@ -10,11 +9,14 @@ import cookieParser from 'cookie-parser'
 const authCookieName = 'token'
 const app = express()
 
-dotenv.config()
+import { readFile } from 'fs/promises';
+const filePath = new URL('./env.json', import.meta. url);
+const contents = await readFile(filePath, { encoding: 'utf8' })
+const env = JSON.parse(contents);
 
-const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID
-const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET
-const REDIRECT_URI = 'http://localhost:4000/api/spotify/callback'
+const CLIENT_ID = env.SPOTIFY_CLIENT_ID
+const CLIENT_SECRET = env.SPOTIFY_CLIENT_SECRET
+const REDIRECT_URI = env.SPOTIFY_REDIRECT_URI
 
 // let users = {
 //     'tyler': {
