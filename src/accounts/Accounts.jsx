@@ -1,5 +1,5 @@
 // src/components/Accounts.jsx
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './Accounts.css';
 import {useNavigate} from "react-router-dom";
 
@@ -9,8 +9,54 @@ const Accounts = () => {
     const [appleMusicUsername, setAppleMusicUsername] = useState("username123"); // Replace with actual username if available
     const [spotifyConnected, setSpotifyConnected] = useState(false); // Assuming Spotify is connected for example purposes
     const [spotifyUsername, setSpotifyUsername] = useState("username123"); // Replace with actual username if available
-
     const navigate = useNavigate()
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const code = params.get('code');
+        if (code) {
+            (async () => {
+                try {
+                    const response = await fetch(`/api/spotify/access`, {
+                        method: 'POST',
+                        body: JSON.stringify({ code: code }),
+                        headers: {
+                            'Content-Type': 'application/json; charset=UTF-8'
+                        }
+                    })
+                    if (response.ok) {
+                        const { displayName } = await response.json()
+                        setSpotifyConnected(true)
+                        setSpotifyUsername(displayName)
+                    } else {
+                        alert("Error connecting Spotify")
+                    }
+                } catch (e) {
+                    console.error('Error handling Spotify callback:', error)
+                    alert("Error connecting Spotify")
+                } finally {
+                    navigate('/accounts', { replace: true });
+                }
+            })()
+        }
+    }, [location.search, navigate])
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(`/api/spotify/access`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                }
+            })
+            if (response.ok) {
+                const { displayName } = await response.json()
+                setSpotifyConnected(true)
+                setSpotifyUsername(displayName)
+            }
+        })()
+    },[])
+
     const handleSubmit = (e) => {
         e.preventDefault()
         navigate('/transfers')
@@ -24,25 +70,8 @@ const Accounts = () => {
     };
 
     const handleSpotifyConnect = async () => {
-        const connectionResponse = await fetch('/api/spotify/connect', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-            }
-        })
-        const {accessToken, refreshToken, expirationDate, username} = await connectionResponse.json()
-        await fetch('/api/spotify/token', {
-            method: 'POST',
-            body: JSON.stringify({accessToken, refreshToken, expirationDate}),
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-            }
-        })
-
-        setSpotifyConnected(true)
-        setSpotifyUsername(username) // Update with actual username after connecting
-        alert("Spotify connected!")
-    };
+        window.location.href = '/api/spotify/connect'
+    }
 
     return (
         <main>

@@ -17,6 +17,7 @@ const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostna
 const client = new MongoClient(url)
 const db = client.db('startup')
 const userCollection = db.collection('user');
+const spotifyCollection = db.collection('spotify');
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -51,4 +52,20 @@ export async function createUser(username, email, password) {
   }
   await userCollection.insertOne(user)
   return user
+}
+
+export async function updateSpotifyConnection(username, accessToken, refreshToken, expirationDate, displayName){
+  const query = { user: username }
+  const spotify = {
+    user: username,
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+    expirationDate: expirationDate,
+    displayName: displayName
+  }
+  await spotifyCollection.findOneAndUpdate(query, {$set: spotify}, {upsert: true})
+}
+
+export async function getSpotifyConnection(username) {
+  return await spotifyCollection.findOne({ user: username })
 }

@@ -72,6 +72,18 @@ apiRouter.post('/auth/login', async (req, res) => {
     }
 })
 
+apiRouter.get('/auth/validate', async (req, res) => {
+    const authToken = req.cookies[authCookieName]
+    const user = await DB.getUserByToken(authToken)
+    if (user) {
+        res.send({
+            username: user.username,
+        })
+    } else {
+        res.status(401).send({ msg: 'Unauthorized' })
+    }
+})
+
 apiRouter.delete('/auth/logout', async (req, res) => {
     res.clearCookie(authCookieName)
     res.status(204).end()
@@ -101,60 +113,61 @@ secureApiRouter.get('/spotify/connect', (req, res) => {
     res.redirect(authURL)
 })
 
-secureApiRouter.get('/spotify/callback', async (req, res) => {
-    const { code } = req.query
-
+secureApiRouter.post('/spotify/access', async (req, res) => {
+    const { code } = req.body
+    const authToken = req.cookies[authCookieName]
     if (!code) {
-        return res.status(400).send('Authorization code is missing')
+        return res.status(400).send('Authorization code is missing');
     }
 
     try {
-        // Exchange the code for an access token
-        const tokenResponse = await axios.post('https://accounts.spotify.com/api/token', querystring.stringify({
-            grant_type: 'authorization_code',
-            code: code,
-            redirect_uri: REDIRECT_URI,
-        }), {
-            headers: {
-                'Authorization': `Basic ${Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')}`,
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        })
+        // Exchange the code for tokens
+        const tokenResponse = await axios.post(
+            'https://accounts.spotify.com/api/token',
+            querystring.stringify({
+                grant_type: 'authorization_code',
+                code: code,
+                redirect_uri: REDIRECT_URI,
+            }),
+            {
+                headers: {
+                    Authorization: `Basic ${Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')}`,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            }
+        );
 
-        const accessToken = tokenResponse.data.access_token
-        const refreshToken = tokenResponse.data.refresh_token
-        const expiresIn = tokenResponse.data.expires_in
-        const expirationDate = Date.now() + expiresIn * 1000
+        const accessToken = tokenResponse.data.access_token;
+        const refreshToken = tokenResponse.data.refresh_token;
+        const expiresIn = tokenResponse.data.expires_in;
+        const expirationDate = Date.now() + expiresIn * 1000;
 
         const response = await axios.get('https://api.spotify.com/v1/me', {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
+            headers: { Authorization: `Bearer ${accessToken}` },
         });
-        const username = response.data.display_name;
-
+        const displayName = response.data.display_name;
+        const user = await DB.getUserByToken(authToken)
+        await DB.updateSpotifyConnection(user.username, accessToken, refreshToken, expirationDate, displayName)
         res.send({
-            accessToken,
-            refreshToken,
-            expirationDate,
-            username
+            displayName
         })
-    } catch (e) {
-        console.error('Error exchanging code for tokens: ', e)
-        res.status(500).send('Failed to exchange authorization code for tokens')
-    }
-})
 
-secureApiRouter.post('/spotify/tokens', async (req, res) => {
-    const { sessionToken, accessToken, refreshToken, expirationDate } = req.body
-    const user = Object.values(users).find((u) => u.sessionToken === sessionToken)
-    if (user) {
-        user.spotifyAccessToken = accessToken
-        user.spotifyRefreshToken = refreshToken
-        user.spotifyExpirationDate = expirationDate
-        res.status(200).end()
+    } catch (e) {
+        console.error('Error exchanging code for tokens: ', e);
+        res.status(500).send('Failed to exchange authorization code for tokens');
     }
-    else {
+});
+
+secureApiRouter.get('/spotify/access', async (req, res) => {
+    const authToken = req.cookies[authCookieName]
+    console.log('route hit')
+    const user = await DB.getUserByToken(authToken)
+    if (user) {
+        const connect = await DB.getSpotifyConnection(user.username)
+        res.json({
+            displayName: connect.displayName
+        })
+    } else {
         res.status(404).send('Failed to find user')
     }
 })
