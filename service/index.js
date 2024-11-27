@@ -160,7 +160,6 @@ secureApiRouter.post('/spotify/access', async (req, res) => {
 
 secureApiRouter.get('/spotify/access', async (req, res) => {
     const authToken = req.cookies[authCookieName]
-    console.log('route hit')
     const user = await DB.getUserByToken(authToken)
     if (user) {
         const connect = await DB.getSpotifyConnection(user.username)
@@ -172,34 +171,78 @@ secureApiRouter.get('/spotify/access', async (req, res) => {
     }
 })
 
-apiRouter.get('/spotify/playlists', async (req, res) => {
-    const sessionToken = req.headers['sessionToken']
-    const user = Object.values(users).find((u) => u.sessionToken === sessionToken)
+secureApiRouter.get('/spotify/playlists', async (req, res) => {
+    const authToken = req.cookies[authCookieName]
+    const user = await DB.getUserByToken(authToken)
     if (user) {
         await refreshSpotifyAccessTokenIfNeeded(user.username)
-        const accessToken = user.spotifyAccessToken
         let playlists = []
-        let url = 'https://api.spotify.com/v1/me/playlists'
+        const connection = await DB.getSpotifyConnection(user.username)
+        if (connection) {
+            let url = 'https://api.spotify.com/v1/me/playlists'
+            while (url) {
+                try {
+                    const response = await axios.get(url, {
+                        headers: {
+                            Authorization: `Bearer ${connection.accessToken}`,
+                        },
+                    })
 
-        while (url) {
-            try {
-                const response = await axios.get(url, {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                })
+                    // Add the current page's playlists to the array
+                    playlists = playlists.concat(response.data.items)
 
-                // Add the current page's playlists to the array
-                playlists = playlists.concat(response.data.items)
-
-                // Check if there's a next page
-                url = response.data.next
-            } catch (error) {
-                console.error('Error fetching playlists:', error)
-                res.status(500).send('Failed to fetch playlists')
+                    // Check if there's a next page
+                    url = response.data.next
+                } catch (error) {
+                    console.error('Error fetching playlists:', error)
+                    res.status(500).send('Failed to fetch playlists')
+                }
             }
         }
-        res.json({playlists})
+        const filteredPlaylists = playlists.map(playlist => ({
+            name: playlist.name,
+            id: playlist.id,
+            tracksHref: playlist.tracks.href,
+        }))
+        res.json({ playlists: JSON.stringify(filteredPlaylists) })
+    } else {
+        res.status(404).send('Failed to find user with session token')
+    }
+})
+
+secureApiRouter.get('/spotify/songs', async (req, res) => {
+    const authToken = req.cookies[authCookieName]
+    const { tracksHref } = req.query
+    const user = await DB.getUserByToken(authToken)
+    if (user) {
+        await refreshSpotifyAccessTokenIfNeeded(user.username)
+        let songs = []
+        const connection = await DB.getSpotifyConnection(user.username)
+        if (connection) {
+            let url = tracksHref;
+            while (url) {
+                try {
+                    const response = await axios.get(url, {
+                        headers: {
+                            Authorization: `Bearer ${connection.accessToken}`,
+                        },
+                    });
+
+                    // Extract songs from the current page
+                    songs = songs.concat(response.data.items);
+
+                    // Proceed to the next page if available
+                    url = response.data.next;
+                } catch (error) {
+                    console.error('Error fetching songs:', error)
+                    res.status(500).send('Failed to fetch songs')
+                }
+            }
+        }
+        const filteredSongs = songs.map(song => ({
+            name: song.track.name
+        }))
+        res.json({ songs: JSON.stringify(filteredSongs) })
     } else {
         res.status(404).send('Failed to find user with session token')
     }
@@ -218,27 +261,29 @@ app.listen(port, () => {
 })
 
 async function refreshSpotifyAccessTokenIfNeeded(username) {
-    const user = users[username]
-    const now = Date.now();
-    if (user.spotifyExpirationDate && now > user.spotifyExpirationDate - 5 * 60 * 1000) { // Refresh 5 minutes before expiration
-        console.log('Access token is about to expire, refreshing...');
-        try {
-            const tokenResponse = await axios.post('https://accounts.spotify.com/api/token', querystring.stringify({
-                grant_type: 'refresh_token',
-                refresh_token: refreshToken,
-            }), {
-                headers: {
-                    'Authorization': `Basic ${Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')}`,
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-            });
+    const connection = await DB.getSpotifyConnection(username)
+    if (connection) {
+        const now = Date.now();
+        if (connection.expirationDate && now > connection.expirationDate - 5 * 60 * 1000) { // Refresh 5 minutes before expiration
+            console.log('Access token is about to expire, refreshing...');
+            try {
+                const tokenResponse = await axios.post('https://accounts.spotify.com/api/token', querystring.stringify({
+                    grant_type: 'refresh_token',
+                    refresh_token: connection.refreshToken,
+                }), {
+                    headers: {
+                        'Authorization': `Basic ${Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')}`,
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                });
 
-            user.spotifyAccessToken = tokenResponse.data.access_token;
-            user.spotifyExpirationDate = Date.now() + (tokenResponse.data.expires_in * 1000); // Update expiration time
-
-            console.log('Access token refreshed');
-        } catch (error) {
-            console.error('Error refreshing access token:', error);
+                connection.accessToken = tokenResponse.data.access_token;
+                connection.expirationDate = Date.now() + (tokenResponse.data.expires_in * 1000); // Update expiration time
+                await DB.updateSpotifyConnection(username, connection.accessToken, connection.refreshToken, connection.expirationDate, connection.displayName)
+                console.log('Access token refreshed');
+            } catch (error) {
+                console.error('Error refreshing access token:', error);
+            }
         }
     }
 }

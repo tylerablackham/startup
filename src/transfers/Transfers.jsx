@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import './Transfers.css';
 import {useNavigate} from "react-router-dom";
 
@@ -7,6 +7,21 @@ const Transfers = () => {
     const [playlists, setPlaylists] = useState([]);
     const [selectedPlaylist, setSelectedPlaylist] = useState("Playlist 1");
     const [songs, setSongs] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch('/api/spotify/playlists', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            if (response.ok) {
+                const { playlists } = await response.json()
+                setPlaylists(JSON.parse(playlists))
+            }
+        })()
+    },[])
 
     const navigate = useNavigate()
     const handleSubmit = (e) => {
@@ -24,9 +39,19 @@ const Transfers = () => {
         // Add logic here to update the transfer
     };
 
-    const handlePlaylistSelect = (playlist) => {
-        setSelectedPlaylist(playlist);
-        // Fetch songs for the selected playlist if you’re using a database
+    const handlePlaylistSelect = async (playlistName, tracksHref) => {
+        setSelectedPlaylist(playlistName);
+        const response = await fetch(`/api/spotify/songs?tracksHref=${tracksHref}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        console.log(response.status)
+        if (response.ok) {
+            const {songs} = await response.json()
+            setSongs(JSON.parse(songs))
+        }
     };
 
     return (
@@ -40,8 +65,8 @@ const Transfers = () => {
                         <div>
                             <ul>
                                 {playlists.map((playlist, index) => (
-                                    <li key={index} onClick={() => handlePlaylistSelect(playlist)}>
-                                        {playlist}
+                                    <li key={index} onClick={() => handlePlaylistSelect(playlist.name, playlist.tracksHref)}>
+                                        {playlist.name}
                                     </li>
                                 ))}
                             </ul>
@@ -54,7 +79,7 @@ const Transfers = () => {
                         <div>
                             <ul>
                                 {songs.map((song, index) => (
-                                    <li key={index}>{song}</li>
+                                    <li key={index}>{song.name}</li>
                                 ))}
                             </ul>
                         </div>
