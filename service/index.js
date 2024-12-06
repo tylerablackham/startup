@@ -10,6 +10,7 @@ const authCookieName = 'token'
 const app = express()
 
 import { readFile } from 'fs/promises';
+import peerProxy from "./peerProxy.js";
 const filePath = new URL('./env.json', import.meta. url);
 const contents = await readFile(filePath, { encoding: 'utf8' })
 const env = JSON.parse(contents);
@@ -260,7 +261,7 @@ const httpService = app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })
 
-
+peerProxy(httpService)
 
 async function refreshSpotifyAccessTokenIfNeeded(username) {
     const connection = await DB.getSpotifyConnection(username)
