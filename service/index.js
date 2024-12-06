@@ -10,7 +10,7 @@ const authCookieName = 'token'
 const app = express()
 
 import { readFile } from 'fs/promises';
-import peerProxy from "./peerProxy.js";
+import { peerProxy } from "./peerProxy.js";
 const filePath = new URL('./env.json', import.meta. url);
 const contents = await readFile(filePath, { encoding: 'utf8' })
 const env = JSON.parse(contents);

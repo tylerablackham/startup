@@ -1,7 +1,7 @@
 import { WebSocketServer } from 'ws'
-const uuid = require('uuid');
+import * as uuid from 'uuid'
 
-function peerProxy(httpServer) {
+export function peerProxy(httpServer) {
   // Create a websocket object
   const wss = new WebSocketServer({ noServer: true });
 
@@ -56,5 +56,3 @@ function peerProxy(httpServer) {
     });
   }, 10000);
 }
-
-module.exports = { peerProxy };
