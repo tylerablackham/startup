@@ -109,3 +109,15 @@ For this deliverable I set up the database that allows the storage of users that
 - [x] **Use MongoDB to store credentials** - Stores the user information in the database.
 - [x] **Restricts functionality** - You can only access the application functionality after logging in. Uses cookies to
 restrict access.
+
+## WebSocket deliverable
+
+For this deliverable I used webSocket to update the number of users in realtime.
+
+- [x] **Backend listens for WebSocket connection** - done!
+- [x] **Frontend makes WebSocket connection** - done!
+- [x] **Data sent over WebSocket connection** - done!
+- [x] **WebSocket data displayed** - Number of users updates in realtime as users register accounts.
+- [x] **All visible elements working** - done! Users can register/login. Number of users updates in real time. Users
+can connect their spotify account. After doing so, they can see their playlists and songs created in spotify. I have
+a fully functioning website now!
