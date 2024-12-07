@@ -34,7 +34,7 @@ const httpService = app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })
 
-peerProxy(httpService)
+const { broadcast } = peerProxy(httpService)
 
 apiRouter.get('/auth/numUsers', async (req, res) => {
     res.send({numUsers: numUsers})
@@ -42,16 +42,18 @@ apiRouter.get('/auth/numUsers', async (req, res) => {
 
 apiRouter.post('/auth/create', async (req, res) => {
     if (await DB.getUser(req.body.username)) {
-        res.status(409).send({ msg: 'Existing username' })
+        res.status(409).send({ msg: 'Existing username' });
     } else {
-        const user = await DB.createUser(req.body.username, req.body.email, req.body.password)
-        setAuthCookie(res, user.token)
+        const user = await DB.createUser(req.body.username, req.body.email, req.body.password);
+        setAuthCookie(res, user.token);
         numUsers = await DB.getNumUsers()
+        console.log("Broadcasting updateNumUsers:", numUsers); // Debug log
+        broadcast({ type: 'updateNumUsers', numUsers });
         res.send({
-            id: user._id
-        })
+            id: user._id,
+        });
     }
-})
+});
 
 apiRouter.post('/auth/login', async (req, res) => {
     const user = await DB.getUser(req.body.username)

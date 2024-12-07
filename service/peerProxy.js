@@ -7,7 +7,9 @@ export function peerProxy(httpServer) {
 
   // Handle the protocol upgrade from HTTP to WebSocket
   httpServer.on('upgrade', (request, socket, head) => {
+    console.log("Upgrade request received");
     wss.handleUpgrade(request, socket, head, function done(ws) {
+      console.log("WebSocket connection established");
       wss.emit('connection', ws, request);
     });
   });
@@ -16,6 +18,7 @@ export function peerProxy(httpServer) {
   let connections = [];
 
   wss.on('connection', (ws) => {
+    console.log('connection', ws);
     const connection = { id: uuid.v4(), alive: true, ws: ws };
     connections.push(connection);
 
@@ -55,4 +58,18 @@ export function peerProxy(httpServer) {
       }
     });
   }, 10000);
+
+  function broadcast(data) {
+    console.log("Broadcasting:", data);
+    connections.forEach((connection) => {
+      if (connection.ws.readyState === connection.ws.OPEN) {
+        console.log("Sending to connection:", connection.id);
+        connection.ws.send(JSON.stringify(data));
+      } else {
+        console.warn("Skipped connection:", connection.id);
+      }
+    });
+  }
+
+  return { broadcast }
 }

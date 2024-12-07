@@ -6,6 +6,7 @@ const Header = ({ isLoggedIn, username }) => {
     const [numUsers, setNumUsers] = useState(0);
 
     useEffect(() => {
+
         (async () => {
             const response = await fetch('/api/auth/numUsers', {
                 method: 'GET',
@@ -18,6 +19,25 @@ const Header = ({ isLoggedIn, username }) => {
                 setNumUsers(await numUsers)
             }
         })()
+
+        let port = window.location.port;
+        const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+        const ws = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+
+        ws.onmessage = (event) => {
+            console.log("WebSocket message received:", event.data);
+            const data = JSON.parse(event.data);
+            if (data.type === 'updateNumUsers') {
+                console.log("Updating numUsers:", data.numUsers);
+                setNumUsers(data.numUsers);
+            }
+        };
+
+        ws.onclose = () => {
+            console.warn('WebSocket closed');
+        };
+
+        return () => ws.close();
     }, []);
 
     return (<header>
