@@ -1,9 +1,24 @@
 import { Link } from "react-router-dom"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 
 const Header = ({ isLoggedIn, username }) => {
-    const [numUsers] = useState('2')
+    const [numUsers, setNumUsers] = useState(0);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch('/api/auth/numUsers', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                }
+            })
+            if (response.ok) {
+                const { numUsers } = await response.json()
+                setNumUsers(await numUsers)
+            }
+        })()
+    }, []);
 
     return (<header>
         <div>

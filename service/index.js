@@ -18,18 +18,7 @@ const env = JSON.parse(contents);
 const CLIENT_ID = env.SPOTIFY_CLIENT_ID
 const CLIENT_SECRET = env.SPOTIFY_CLIENT_SECRET
 const REDIRECT_URI = env.SPOTIFY_REDIRECT_URI
-
-// let users = {
-//     'tyler': {
-//         username: 'tyler',
-//         password: 'pass',
-//         email: 'email@tyler.com',
-//         sessionToken: 0,
-//         spotifyAccessToken: null,
-//         spotifyRefreshToken: null
-//     }
-// }
-let numUsers = DB.getNumUsers()
+let numUsers = await DB.getNumUsers()
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000
 
@@ -41,6 +30,12 @@ app.set('trust proxy', true)
 const apiRouter = express.Router();
 app.use(`/api`, apiRouter)
 
+const httpService = app.listen(port, () => {
+    console.log(`Listening on port ${port}`)
+})
+
+peerProxy(httpService)
+
 apiRouter.get('/auth/numUsers', async (req, res) => {
     res.send({numUsers: numUsers})
 })
@@ -51,7 +46,7 @@ apiRouter.post('/auth/create', async (req, res) => {
     } else {
         const user = await DB.createUser(req.body.username, req.body.email, req.body.password)
         setAuthCookie(res, user.token)
-        numUsers += 1
+        numUsers = await DB.getNumUsers()
         res.send({
             id: user._id
         })
@@ -256,12 +251,6 @@ app.use(function (err, req, res, next) {
 app.use((_req, res) => {
     res.sendFile('index.html', { root: 'public' })
 })
-
-const httpService = app.listen(port, () => {
-    console.log(`Listening on port ${port}`)
-})
-
-peerProxy(httpService)
 
 async function refreshSpotifyAccessTokenIfNeeded(username) {
     const connection = await DB.getSpotifyConnection(username)

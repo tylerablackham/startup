@@ -37,7 +37,7 @@ export function getUserByToken(token) {
 }
 
 export async function getNumUsers() {
-  return (await userCollection.find({}).toArray()).length
+  return await userCollection.countDocuments({})
 }
 
 export async function createUser(username, email, password) {
